@@ -1,0 +1,19 @@
+version: '2'
+services:
+  timezones:
+    build: ./timezones
+    image: timezones:1.0
+    environment:
+      - DBHOST=db-cities
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db_cities
+
+  db_cities:
+    build: ./db
+    image: db_cities:1.0
+    environment:
+        POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432" 
