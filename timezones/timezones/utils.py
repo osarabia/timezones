@@ -1,7 +1,4 @@
 import os
-import psycopg2
-
-from config import DSN
 
 months = {
             1: "January",
@@ -40,11 +37,6 @@ def get_file(filename):
         return open(src).read()
     except IOError as e:
         return str(e)
-
-
-def get_db_conn():
-    return psycopg2.connect(DSN)
-
 
 def dt_to_dict(dt):
     return {
