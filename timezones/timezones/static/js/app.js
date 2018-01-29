@@ -10,7 +10,7 @@ var app = new Vue({
         };
 
 
-        axios.get("/watchlist/cities/")
+        axios.get("/watchlist/")
              .then(function(resp) {
                  vm.watchlist = resp.data;
              })
@@ -61,10 +61,15 @@ var app = new Vue({
             this.cities = [];
         },
         addToWatchList: function(){
-            resource = "watchlist/cities/" + this.city_id;
+            resource = "/watchlist/";
+
             var vm = this;
-            d = new Date();
-            axios.post(resource, {"timestamp": (d.getTime()-d.getMilliseconds())/1000})
+            var d = new Date();
+            var payload = { 
+                              "city_id": this.city_id,
+                              "timestamp": (d.getTime()-d.getMilliseconds())/1000
+                          };
+            axios.post(resource, payload)
                  .then(function(resp){
                      vm.watchlist.push(resp.data);
                      vm.city = "";
@@ -76,7 +81,7 @@ var app = new Vue({
                  });
         },
         getCities: _.debounce(function(city){
-            filter_city = "/cities?city="+city;
+            filter_city = "/cities?startswith="+city;
             var vm = this;
             axios.get(filter_city)
                  .then(function(resp){
@@ -88,7 +93,7 @@ var app = new Vue({
         }, 500),
         getWatchlist: function(){
             var vm = this;
-            axios.get("/watchlist/cities/")
+            axios.get("/watchlist/")
                  .then(function(resp) {
                      vm.watchlist = resp.data;
                  })
@@ -97,7 +102,7 @@ var app = new Vue({
                  });
         },
         deleteCity: function(city_id) {
-            resource = "watchlist/cities/" + city_id;
+            resource = "watchlist/" + city_id;
             var vm = this;
             axios.delete(resource)
                 .then(function() {
