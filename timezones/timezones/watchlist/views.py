@@ -1,10 +1,8 @@
-from flask import request, Response, json
+from flask import request, Response, json, current_app
 from flask.views import MethodView
 
-from timezones import errors
 from timezones import helpers
 from timezones import utils
-from timezones.models import CitiesModel
 from timezones.validations import validate_watchlist
 
 watchlist = []
@@ -24,7 +22,7 @@ class WatchList(MethodView):
         validated_data = validate_watchlist(request.json)
         city_id = validated_data["city_id"]
         if city_id not in unique_watchlist:
-            location = CitiesModel.get_city_location(city_id)
+            location = current_app.CitiesModel.get_city_location(city_id)
 
             timezone = helpers.fetch_timezone(timestamp=validated_data["timestamp"],
                                               **location)

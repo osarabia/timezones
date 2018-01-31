@@ -1,12 +1,11 @@
 
-from timezones import db
 from timezones.countries import countries
 from timezones.exceptions import DoesNotExists
 
 SQL_CITIES = "select city_id, name, country from cities where name like %s limit 10"
 SQL_CITY = "select city_id, country, name, lat, lon from cities where city_id=%s"
 
-class _Cities(object):
+class CitiesModel(object):
     def __init__(self, conn):
         self.conn = conn
 
@@ -41,5 +40,3 @@ class _Cities(object):
                        }
 
         raise DoesNotExists()
-
-CitiesModel = _Cities(db)
